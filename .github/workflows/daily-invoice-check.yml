@@ -2,7 +2,7 @@ name: Daily Invoice Check
 
 on:
   schedule:
-    - cron: "0 12 * * *" # 6:00 AM CST
+    - cron: "0 12 * * *"
   workflow_dispatch:
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
         run: npm install
 
       - name: Run daily invoice job
-        run: node chasin-api/runDailyInvoiceCheck.js
+        run: node runDailyInvoiceCheck.js
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
