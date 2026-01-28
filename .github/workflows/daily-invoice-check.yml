@@ -1,0 +1,33 @@
+name: Daily Invoice Check
+
+on:
+  schedule:
+    - cron: "0 12 * * *" # 6:00 AM CST
+  workflow_dispatch:
+
+jobs:
+  run-daily-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        working-directory: chasin-api
+        run: npm install
+
+      - name: Run daily invoice job
+        working-directory: chasin-api
+        run: node runDailyInvoiceCheck.js
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
