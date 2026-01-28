@@ -2,7 +2,7 @@ name: Daily Invoice Check
 
 on:
   schedule:
-    - cron: "0 1 * * *" # 6:00 AM CST
+    - cron: "*/15 * * * *" # 6:00 AM CST
   workflow_dispatch:
 
 jobs:
