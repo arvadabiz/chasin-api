@@ -19,12 +19,10 @@ jobs:
           node-version: 18
 
       - name: Install dependencies
-        working-directory: chasin-api
         run: npm install
 
       - name: Run daily invoice job
-        working-directory: chasin-api
-        run: node runDailyInvoiceCheck.js
+        run: node chasin-api/runDailyInvoiceCheck.js
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
