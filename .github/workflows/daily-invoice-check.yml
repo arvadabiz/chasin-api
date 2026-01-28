@@ -10,22 +10,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      - uses: actions/setup-node@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 18
-
-      - name: Debug paths
-        run: |
-          pwd
-          ls -la
 
       - name: Install dependencies
         run: npm install
 
       - name: Run daily invoice job
-        run: node chasin-api/runDailyInvoiceCheck.js
+        run: node runDailyInvoiceCheck.js
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
