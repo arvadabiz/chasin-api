@@ -1,26 +1,40 @@
 name: Daily Invoice Check
 
 on:
-  schedule:
-    - cron: "*/15 * * * *" # 6:00 AM CST
+  # Run immediately on push to main branch
+  push:
+    branches:
+      - main
+  # Run manually from Actions tab
   workflow_dispatch:
+  # Run every 15 minutes
+  schedule:
+    - cron: "*/15 * * * *"
 
 jobs:
   run-daily-job:
     runs-on: ubuntu-latest
 
     steps:
+      # 1. Checkout the repo
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Setup Node
+      # 2. Setup Node.js
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
+      # 3. Install dependencies
       - name: Install dependencies
         run: npm install
 
+      # 4. Log current time (helps confirm cron runs)
+      - name: Log current time
+        run: date
+
+      # 5. Run your Node.js job
       - name: Run daily invoice job
         run: node runDailyInvoiceCheck.js
         env:
@@ -29,3 +43,8 @@ jobs:
           SMTP_HOST: ${{ secrets.SMTP_HOST }}
           SMTP_USER: ${{ secrets.SMTP_USER }}
           SMTP_PASS: ${{ secrets.SMTP_PASS }}
+
+      # 6. Optional: Notify if the job fails
+      - name: Notify on failure
+        if: failure()
+        run: echo "Daily invoice job failed! Check logs."
